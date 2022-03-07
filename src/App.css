@@ -1,0 +1,53 @@
+body {
+  background-color: #e8e6dd;
+  color: #262322;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+}
+
+.card {
+  border-color: transparent;
+  background-color: #C1B2AC;
+}
+
+.property-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 13rem));
+  
+}
+
+.card-text {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.card-title {
+  font-size: large;
+  font-weight: 400;
+}
+
+.card-units {
+  font-size: large;
+  font-weight: 400;
+  display: inline-block;
+  font-style: italic;
+}
+
+button {
+  background-color: transparent;
+  color: #262322;
+  border: 2px solid #262322;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin: 8px;
+}
+
+button:hover {
+  background-color: #262322;
+  color: #e8e6dd;
+  transition: .5s;
+}
+
+
+
