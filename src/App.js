@@ -8,6 +8,12 @@ const BANNER_NAME = "E-BIKE METRICS";
 // const units = {"HR": "BPM",
 //               "assist_lvl": "",
 //               "mode": ""}
+const terms = {"assist_level": "Assist Level",
+               "bpm": "BPM",
+               "calories_burned": "Calories Burned",
+               "power": "Power",
+               "mode": "Mode",
+               "username": "User"};
 
 const App = () => {
   const [ bike, setBike] = useState();
@@ -43,6 +49,7 @@ const App = () => {
 
   // FIND OPEN THING
   useEffect(() => {
+    // console.log('hi')
     const fetchUID = async () => {
       const result = await fetch(API_PATH + function_path + 'opentracker/invoke', {
         method: 'POST',
@@ -53,19 +60,22 @@ const App = () => {
           'Authorization': temp_token,
           'Cache-control': 'no-cache',
         }}
-      ).catch( err => console.log('GET: something went wrong', err));
-        if (!result.ok) throw result;
-        const json = await result.json();
-        console.log("open tracker:", json)
-        
-        if (json['data'].length == 0) {
-          setUID('empty')
-          console.log("no open things found") 
-        } else {
-          setUID(json['data'][0]['uid']);
-          console.log("open things found")
-        }
+      )
+      .catch( err => console.log('GET: something went wrong', err));
+      
+      // console.log("ln 58")
+      if (!result.ok) throw result;
+      const json = await result.json();
+      console.log("open tracker:", json)
+    
+      if (json['data'].length == 0) {
+        setUID('empty')
+        console.log("no open things found")
+      } else {
+        setUID(json['data'][0]['uid']);
+        console.log("open things found")
       }
+    }
       setTimeout( () => fetchUID(), 1000);
   });
 
@@ -83,7 +93,7 @@ const App = () => {
 
         if (!result.ok) throw result;
         const json = await result.json();
-        console.log(json)
+        // console.log(json)
         setBike(json);
       }
       setTimeout( () => fetchBike(), 1000);
@@ -119,18 +129,27 @@ const App = () => {
     .then(async data => {
       const uid_temp = data['uid'];
       console.log('uid_temp: ',uid_temp)
-      return fetch(API_PATH + function_path + 'updatestate/invoke', {
+      await fetch(API_PATH + function_path + 'updateproperties/invoke', {
               method: "POST",
-              body: JSON.stringify({"uid": uid_temp, "state": "opened"}),
+              body: JSON.stringify({"uid": uid_temp, "properties": {
+                "assist_level": 0 ,
+                "bpm": 100,
+                "calories_burned": 0,
+                "power": 0,
+                // "mode": "Heart rate Mode",
+                "username": "hannah",
+                "state": "opened"
+              }}),
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 // 'Authorization': data.token_type + ' ' + data.access_token,
                 'Authorization': temp_token
         }
-      }).then(response => console.log(response.json()))
-        .then(() => setUID(uid_temp));
+      })
+      .then( () => setUID(uid_temp))
+      .catch( err => console.log('updatestate: something went wrong', err) )
     })
-    .catch( err => console.log('POST: something went wrong', err));
+    .catch( err => console.log('POST: something went wrong', err) );
   };
 
   async function endRide() {
@@ -169,7 +188,7 @@ const Banner = ({ title }) => (
 
 const PropertyList = ({ properties }) => (
   <div className = "property-list">
-    { Object.entries(properties).map( ([key, value]) => <Property key = {key} name = {key} value = {value} /> )}
+    { Object.entries( properties ).map( ([key, value]) => <Property key = {key} name = {terms[key]} value = {value} /> ) }
   </div>
 )
 
