@@ -145,7 +145,7 @@ const App = () => {
     });
   };
   if (!uid) {
-    return <h1 className="container-fluid">Loading Ride...</h1>;
+    return <h1 className="container-fluid">Finding Ride...</h1>;
   } else if (uid == 'empty') {
     return <button onClick={ () => startRide()}>Start Ride</button>
   } else if (!bike) {
