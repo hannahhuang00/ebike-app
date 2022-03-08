@@ -29,8 +29,9 @@ body {
 .card-units {
   font-size: large;
   font-weight: 400;
-  display: inline-block;
+  display: inline;
   font-style: italic;
+  text-align: right;
 }
 
 button {
@@ -49,5 +50,24 @@ button:hover {
   transition: .5s;
 }
 
+.user-line {
+  display: inline-block;
+}
 
+.user-text {
+  background-color: #262322;
+  color: #e8e6dd;
+  border: 2px solid #262322;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 8px;
+}
 
+.ride-button {
+  font-size: xx-large;
+}
+
+.center {
+  margin: auto;
+  text-align: center;
+}
